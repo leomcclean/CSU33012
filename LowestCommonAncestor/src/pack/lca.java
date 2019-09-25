@@ -56,9 +56,10 @@ public class lca<Key extends Comparable<Key>, Value>
     }
     
     // recursively navigates a tree to create a lineage
-    public String listAncestors(Node y)
+    private int[] listAncestors(Node y)
     {
-    	return listAncestorsRecursive(root, y, "").substring(1) + "." + root;
+    	String roughLineage = listAncestorsRecursive(root, y, "").substring(1) + "." + root;
+    	return sire(roughLineage);
     }
     
     private String listAncestorsRecursive(Node x, Node y, String answer)
@@ -69,7 +70,6 @@ public class lca<Key extends Comparable<Key>, Value>
     			answer = listAncestorsRecursive(x.left, y, answer);
     		else
     			return answer + "." + x.left.value;
-    		return answer + "." + x.value;
     	}
     	if(x.right != null)
     	{
@@ -77,17 +77,35 @@ public class lca<Key extends Comparable<Key>, Value>
     			answer = listAncestorsRecursive(x.right, y, answer);
     		else
     			return answer + "." + x.right.value;
-    		return answer + "." + x.value;
     	}
-    	return answer;
+    	if(answer == "")
+    		return answer;
+    	else
+    		return answer + "." + x.value;
+    }
+    
+    // turns a delimited lineage String into a lineage Array
+    private int[] sire(String roughLineage)
+    {
+    	int lineage[] = new int[10];
+    	return lineage;
     }
     
     // find the lowest common ancestor by comparing lineages
     public Node lowestCommonAncestor(Node list[])
     {
     	Node lowest = root;
-    	String lineages[] = new String[list.length];
+    	//int lineages[] = new int[list.length];
     	for(int i = 0; i < list.length; i++)
+    	{
+    		//lineages[i] = listAncestors(list[i]);
+    	}
+    	int shortest = 0;
+    	//for(int i = 0; i < lineages.length; i++)
+    	{
+    		
+    	}
+    	for(int i = 1; i < shortest; i++)
     	{
     		
     	}
