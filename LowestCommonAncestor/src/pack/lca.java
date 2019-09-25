@@ -55,61 +55,43 @@ public class lca<Key extends Comparable<Key>, Value>
         	return x.N;
     }
     
-    // recursively navigates a tree from a supposed 'root' node to see if it has a certain descendant
-    public boolean isAncestor(Node x, Node y)
+    // recursively navigates a tree to create a lineage
+    public String listAncestors(Node y)
     {
-    	return isAncestorRecursive(x, y, false);
+    	return listAncestorsRecursive(root, y, "").substring(1) + "." + root;
     }
     
-    private boolean isAncestorRecursive(Node x, Node y, boolean answer)
+    private String listAncestorsRecursive(Node x, Node y, String answer)
     {
     	if(x.left != null)
     	{
-    		if(x.left == y)
-    			return true;
+    		if(x.left != y)
+    			answer = listAncestorsRecursive(x.left, y, answer);
     		else
-    			answer = isAncestorRecursive(x.left, y, false);
+    			return answer + "." + x.left.value;
+    		return answer + "." + x.value;
     	}
-    	if(answer == true)
-    		return true;
     	if(x.right != null)
     	{
-    		if(x.right == y)
-    			return true;
+    		if(x.right != y)
+    			answer = listAncestorsRecursive(x.right, y, answer);
     		else
-    			answer = isAncestorRecursive(x.right, y, false);
+    			return answer + "." + x.right.value;
+    		return answer + "." + x.value;
     	}
     	return answer;
     }
     
+    // find the lowest common ancestor by comparing lineages
     public Node lowestCommonAncestor(Node list[])
     {
-    	return lcaRecursive(list, root);
-    }
-    
-    private Node lcaRecursive(Node list[], Node ancestor)
-    {
-    	boolean test = true;
-    	Node newA = null;
+    	Node lowest = root;
+    	String lineages[] = new String[list.length];
     	for(int i = 0; i < list.length; i++)
     	{
-    		if(isAncestor(ancestor, list[i]) != true)
-    		{
-    			test = false;
-    		}
+    		
     	}
-    	if(test = false)
-    	{
-    		return ancestor;
-    	}else
-    	{
-    		newA = lcaRecursive(list, ancestor.left);
-    		if(newA == ancestor.left)
-    			newA = lcaRecursive(list, ancestor.right);
-    		else
-    			newA = lcaRecursive(list, ancestor.left);
-    	}
-    	return newA;
+    	return lowest;
     }
     
     // delete these later leo
