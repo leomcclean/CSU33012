@@ -1,17 +1,17 @@
 package pack;
 
-public class lca<Key extends Comparable<Key>, Value>
+public class lca
 {
     public Node root;
 
     public class Node
     {
-        private Key key;
+        private int key;
         private int value;
         private Node left, right;
         private int N;
 
-        public Node(Key key, int value, int N)
+        public Node(int key, int value, int N)
         {
             this.key = key;
             this.value = value;
@@ -19,34 +19,13 @@ public class lca<Key extends Comparable<Key>, Value>
         }
     }
     
-    // this creates our tree
-    public void put(Key key, int value)
-    {
-        root = put(root, key, value);
-    }
-
-    private Node put(Node x, Key key, int value)
-    {
-        if(x == null)
-        	return new Node(key, value, 1);
-        int cmp = key.compareTo(x.key);
-        if(cmp < 0)
-        	x.left  = put(x.left, key, value);
-        else if(cmp > 0)
-        	x.right = put(x.right, key, value);
-        else
-        	x.value = value;
-        x.N = 1 + size(x.left) + size(x.right);
-        return x;
-    }
-    
-    // return number of key-value pairs in BST
+    // return number of int-value pairs in BST
     public int size()
     {
     	return size(root);
     }
 
-    // return number of key-value pairs in BST rooted at x
+    // return number of int-value pairs in BST rooted at x
     private int size(Node x)
     {
         if (x == null)
@@ -58,20 +37,20 @@ public class lca<Key extends Comparable<Key>, Value>
     // recursively navigates a tree to create a lineage
     private int[] listAncestors(Node y)
     {
-    	String roughLineage = listAncestorsRecursive(root, y, "").substring(1) + "." + root;
+    	String roughLineage = listAncestorsRecursive(root, y, "") + "." + root;
     	return sire(roughLineage);
     }
     
     private String listAncestorsRecursive(Node x, Node y, String answer)
     {
-    	if(x.left != null)
+    	if(x.left != null && answer == "")
     	{
     		if(x.left != y)
     			answer = listAncestorsRecursive(x.left, y, answer);
     		else
     			return answer + "." + x.left.value;
     	}
-    	if(x.right != null)
+    	if(x.right != null && answer == "")
     	{
     		if(x.right != y)
     			answer = listAncestorsRecursive(x.right, y, answer);
@@ -87,29 +66,56 @@ public class lca<Key extends Comparable<Key>, Value>
     // turns a delimited lineage String into a lineage Array
     private int[] sire(String roughLineage)
     {
-    	int lineage[] = new int[10];
+    	int stringlength = roughLineage.length();
+    	int lineage[] = new int[stringlength / 2];
+    	for(int i = 1, j = 0; i <= stringlength; i += 2, j++)
+    	{
+    		lineage[j] = roughLineage.charAt(i);
+    	}
     	return lineage;
     }
     
     // find the lowest common ancestor by comparing lineages
-    public Node lowestCommonAncestor(Node list[])
+    public int lowestCommonAncestor(Node list[])
     {
-    	Node lowest = root;
-    	//int lineages[] = new int[list.length];
+    	int lineages[][] = new int[list.length][];
     	for(int i = 0; i < list.length; i++)
     	{
-    		//lineages[i] = listAncestors(list[i]);
+    		lineages[i] = listAncestors(list[i]);
     	}
+    	
     	int shortest = 0;
-    	//for(int i = 0; i < lineages.length; i++)
+    	for(int i = 0; i < lineages.length; i++)
     	{
-    		
+    		if(lineages[i][0] < shortest || shortest == 0)
+    			shortest = lineages[0][i];
     	}
+    	
+    	int lca = 0;
     	for(int i = 1; i < shortest; i++)
     	{
-    		
+    		boolean test1 = true;
+    		for(int j = 1; j < lineages.length; j++)
+    		{
+    			boolean test2 = false;
+    			for(int k = 0; k < lineages[j].length; k++)
+    			{
+    				if(lineages[j][k] == lineages[0][i])
+    					test2 = true;
+    			}
+    			if(!test2)
+    			{
+    				test1 = false;
+    				break;
+    			}
+    		}
+    		if(test1)
+    		{
+    			lca = lineages[0][i];
+    			break;
+    		}
     	}
-    	return lowest;
+    	return lca;
     }
     
     // delete these later leo
