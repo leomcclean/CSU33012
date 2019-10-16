@@ -10,7 +10,11 @@ public class dag
 	public dag(int size)
 	{
 		this.size = size;
-		adj = new ArrayList<>(size);
+		if(size > 0)
+		{
+			System.out.println("here");
+			adj = new ArrayList<ArrayList<Integer>>(size);
+		}
 	}
 	
 	// insert a new edge - we also check if this makes the graph cyclic
@@ -21,7 +25,8 @@ public class dag
 			return false;
 		// copy the list and use its copy to test for a cycle
 		ArrayList<ArrayList<Integer>> adj2 = adj;
-		adj2.get(start).add(end);
+		ArrayList<Integer> temp = adj2.get(start);
+		temp.add(end);
 		if(isAcyclic(adj2))
 			return false;
 		// if the addition does not create a cycle we can add it to the main adjacency list
@@ -30,7 +35,7 @@ public class dag
 	}
 	
 	// test for cycles within a graph to ensure it is a DAG
-	public boolean isAcyclic(ArrayList<ArrayList<Integer>> test)
+	private boolean isAcyclic(ArrayList<ArrayList<Integer>> test)
 	{
 		// a graph with one node or zero nodes is acyclic
 		if(test.size() == 1 || test.isEmpty())
@@ -57,30 +62,42 @@ public class dag
 		return true;
 	}
 
+	// find a lowest common ancestor
 	public int lca(int one, int two)
 	{
+		if(size < 1)
+			return -1;
+		// use BFS to map ancestors of two nodes
 		int[] visited = new int[size];
+		// the intersection of the first and second family are candidates for lca
 		int[] familyOne = breadthFirstSearch(visited, one, 1);
 		int[] familyTwo = breadthFirstSearch(familyOne, two, 2);
 		
+		// derive the lca by finding the closest ancestor
 		int[] count = new int[size];
 		for(int i = 0; i < size; i++)
 		{
+			// if a node is an ancestor of the pair...
 			if(familyTwo[i] == 2)
 			{
+				// ...see if it has a parent that is also an ancestor...
 				ArrayList<Integer> temp = adj.get(i);
 				for(int j = 0; j < temp.size(); j++)
 				{
+					// ...if it does, increment the parents score
 					if(familyTwo[temp.get(j)] == 2)
-						count[i]++;
+						count[j]++;
 				}
 			}
 		}
+		// the lowest score (0) is an ancestor with no children closer to the two nodes
 		for(int i = 0; i < count.length; i++)
 		{
+			// therefore any node with a (0) score is the lca
 			if(familyTwo[i] == 2 && count[i] == 0)
 				return count[i];
 		}
+		// if there are no ancestors in common we can return (-1) for a failure
 		return -1;
 	}
 	

@@ -1,75 +1,36 @@
 package pack;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 import org.junit.jupiter.api.Test;
 
 class testing
 {
+	/*
 	@Test
-	void testSix_RootLCA()
+	void badDAG()
 	{
-		lca tree = new lca();
-		tree.root = tree.new Node(1);
-		tree.root.right = tree.new Node(2);
-		tree.root.right.right = tree.new Node(3);
-		tree.root.right.right.left = tree.new Node(4);
-		tree.root.left = tree.new Node(5);
-		tree.root.left.right = tree.new Node(6);
-		int[] array = {4,6};
-		assertEquals(tree.lowestCommonAncestor(array), 1);
-	}
-
-	@Test
-	void testSix_InLCA()
-	{
-		lca tree = new lca();
-		tree.root = tree.new Node(1);
-		tree.root.right = tree.new Node(2);
-		tree.root.right.right = tree.new Node(3);
-		tree.root.left = tree.new Node(5);
-		tree.root.left.left = tree.new Node(4);
-		tree.root.left.right = tree.new Node(6);
-		int[] array = {4,6};
-		assertEquals(tree.lowestCommonAncestor(array), 5);
-	}
-
-	@Test
-	void testTwelve_RootLCA()
-	{
-		lca tree = new lca();
-		tree.root = tree.new Node(1);
-		tree.root.right = tree.new Node(2);
-		tree.root.right.right = tree.new Node(3);
-		tree.root.right.right.left = tree.new Node(4);
-		tree.root.left = tree.new Node(5);
-		tree.root.left.right = tree.new Node(6);
-		tree.root.right.left = tree.new Node(7);
-		tree.root.right.right.left.right = tree.new Node(8);
-		tree.root.right.right.left.right.right = tree.new Node(9);
-		tree.root.left.right.left = tree.new Node(10);
-		tree.root.left.right.left.right = tree.new Node(11);
-		tree.root.left.right.left.right.left = tree.new Node(12);
-		int[] array = {2,3,11,12};
-		assertEquals(tree.lowestCommonAncestor(array), 1);
+		dag test = new dag(-1);
+		assertFalse(test.edge(0, 1));
 	}
 	
 	@Test
-	void testTwelve_InLCA()
+	void badEdge()
 	{
-		lca tree = new lca();
-		tree.root = tree.new Node(1);
-		tree.root.right = tree.new Node(2);
-		tree.root.right.right = tree.new Node(3);
-		tree.root.right.right.left = tree.new Node(4);
-		tree.root.left = tree.new Node(5);
-		tree.root.left.right = tree.new Node(6);
-		tree.root.right.left = tree.new Node(7);
-		tree.root.right.right.left.right = tree.new Node(8);
-		tree.root.right.right.left.left = tree.new Node(9);
-		tree.root.left.right.left = tree.new Node(10);
-		tree.root.left.right.left.right = tree.new Node(11);
-		tree.root.left.right.left.right.left = tree.new Node(12);
-		int[] array = {8,9,7};
-		assertEquals(tree.lowestCommonAncestor(array), 2);
+		dag test = new dag(2);
+		assertFalse(test.edge(-1, 1) && test.edge(0, 3) && test.edge(0, -2) && test.edge(4, 1));
+	}
+	*/
+	@Test
+	void testCyclic()
+	{
+		dag test = new dag(3);
+		assertFalse(!test.edge(0, 1) && !test.edge(1, 2) && test.edge(2, 3));
+	}
+
+	@Test
+	void testTwelveNodeLCA()
+	{
+
 	}
 }
