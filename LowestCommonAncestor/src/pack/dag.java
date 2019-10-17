@@ -12,8 +12,9 @@ public class dag
 		this.size = size;
 		if(size > 0)
 		{
-			System.out.println("here");
 			adj = new ArrayList<ArrayList<Integer>>(size);
+			for(int i = 0; i < size; i++)
+				adj.add(new ArrayList<Integer>());
 		}
 	}
 	
@@ -23,15 +24,18 @@ public class dag
 		// if any of the variables are invalid
 		if(start > size || start < 0 || end > size || end < 0)
 			return false;
-		// copy the list and use its copy to test for a cycle
-		ArrayList<ArrayList<Integer>> adj2 = adj;
-		ArrayList<Integer> temp = adj2.get(start);
-		temp.add(end);
-		if(isAcyclic(adj2))
-			return false;
-		// if the addition does not create a cycle we can add it to the main adjacency list
+		// add the edge
 		adj.get(start).add(end);
-		return true;
+		if(isAcyclic(adj))
+		{
+			// if the addition creates a cycle we remove the new edge and return an error
+			adj.get(start).remove(adj.get(start).size() - 1);
+			return false;
+		}else
+		{
+			// if the addition does not create a cycle we can add it to the main adjacency list
+			return true;
+		}
 	}
 	
 	// test for cycles within a graph to ensure it is a DAG

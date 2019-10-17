@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 class testing
 {
-	/*
 	@Test
 	void badDAG()
 	{
@@ -20,7 +19,7 @@ class testing
 		dag test = new dag(2);
 		assertFalse(test.edge(-1, 1) && test.edge(0, 3) && test.edge(0, -2) && test.edge(4, 1));
 	}
-	*/
+	
 	@Test
 	void testCyclic()
 	{
